@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>BLOCK CHAIN</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+		
+	
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+	</head>
+    
+	<style>
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+	   #fff{
+	     width: 1000px;
+		 height: 1000px;
+	   }
+	   
+	   .ddd{
+	     color: red;
+		 font-size: 20ox;
+	   }
+	   
+	  .ydd{
+	     color: yellow;
+		 font-size: 20ox;
+	   }
+	   
+	    .gdd{
+	     color: green;
+		 font-size: 20ox;
+	   }
+	</style>
+	
+	<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="lib/web3.min.js"></script>
+	
+	<script>
+
+		var Web3 = require("web3"),
+		web3 = new Web3();
+		web3.setProvider(new web3.providers.HttpProvider("http://localhost:8545"))
+		
+		
+		function TFunc() {
+
+				var address = $('#select_box').val()
+					
+				var balance1 = web3.fromWei(web3.eth.getBalance(address))
+					
+					$('#balance').val(balance1)
+			} 
+			
+		$(document).ready(function(){
+				
+				$("#sendBtn").click(function() {
+					//var input_val = $('#balance').val()
+					//$("#vvv").val(input_val);
+					
+				if(web3.personal.unlockAccount($('#select_box').val(), $('#password').val()))
+				{
+					var transactionObj = {
+					from: $('#select_box').val(),
+					to: $('#recever').val(),
+					value: web3.toWei($('#valuel').val())
+					}
+					
+					web3.eth.sendTransaction(transactionObj, function(err, res) { //콜백함수 자동으로호출
+						if(err){
+								console.log(err)
+						} else{
+								console.log(web3.eth.sendTransaction(res))
+						}
+					})
+				}			
+			})
+			
+			
+			$("#sideBtn").click(function() {
+				if(web3.personal.unlockAccount($('#select_box').val(), $('#password').val()))
+				{
+					var transactionObj = {
+					from: $('#select_box').val(),
+					to: $('#side').val(),
+					value: web3.toWei($('#valuel').val())
+					}
+					
+					web3.eth.sendTransaction(transactionObj, function(err, res) { //콜백함수 자동으로호출
+						if(err){
+								console.log(err)
+						} else{
+								console.log(web3.eth.sendTransaction(res))
+						}
+					})
+				}			
+			})
+
+			var account_list = web3.eth.accounts
+			var html;
+			
+			account_list.forEach(function(address){
+				console.log(address)
+				
+				html = '<option value= "' + address + '">'
+					+ address +
+					'</option>'
+			
+				$('#select_box').append(html)
+				$('#recever_box').append(html)
+
+			})
+			
+			
+			
+			$("#newBtn").click(function() {
+			
+				//var ne = $('#newaccount').val()
+				var neac = web3.personal.newAccount($('#newaccount').val())		
+				
+				html = '<option value= "' + neac + '">'
+					+ neac +
+					'</option>'
+					
+				alert("등록되었습니다");
+				$('#newaccount').val('')
+				$('#select_box').append(html)
+				$('#recever_box').append(html)
+			})
+			
+			TFunc()
+					
+				$('#select_box').change(function(){
+					
+					//console.log($('#select_box')).val()		
+					//console.log(web3.eth.getBalance(address))
+					TFunc()
+			
+			})
+		})	
+	
+		
+			
+	</script>
+	
+	
+		<body style="background-image: url('./ttt.png');>
+		
+			 
+			<!-- Add your site or application content here -->
+			
+			<div id="fff" class="ydd" <h2><strong> KIM DApp </strong></h2> </div>
+			
+			
+			<div class="gdd">
+				<td><h4> ACCOUNT:
+					<select id="select_box" name="first_name">
+					</select> 
+			
+				<td>NEW ACCOUNT: <input type="password" id="newaccount" /></td>
+					
+				<button id="newBtn" style="width:200px; height:50px; margin-top:15px;" >생성</button></h4>
+		
+			</div>
+			
+			
+			<div class="ddd">
+				<h4><td>BALANCE: <input type="text" id="balance" readonly /> </td></h4>
+			</div>
+			 
+	    <br>	
+		  
+		   <div class="ddd">
+				<td><h4> RECEVER:
+					<select id="recever_box" name="second_name">
+					</select> </td></h4>
+			</div>
+			
+			<div  class="ddd">		
+				<h4>VALUE: <input type="text" id="valuel" /> </h4>
+			</div>
+			
+				<div  class="ddd">		
+				<h4>SIDE SEND : <input type="text" id="side" /> </h4>
+			</div>
+		   
+	    <br>	
+			
+			<div class="ddd">
+				<h4>Password:<input type="Password" id="password" ><br> </h4>
+			</div>
+			
+			<div>	
+				<button id="sendBtn" style="width:500px; height:60px; margin-top:15px;" >SEND</button>
+			</div>
+			
+			<div>	
+				<button id="sideBtn" style="width:500px; height:60px; margin-top:15px;" >SIDE SEND</button>
+			</div>
+	 
+ 
+		</body>
+</html>
+    
